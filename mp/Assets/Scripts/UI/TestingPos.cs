@@ -23,25 +23,22 @@ public class TestingPos : MonoBehaviourSingleton<TestingPos>
 
         _cube.transform.position = pos;
 
-        if (NetworkManager.Instance.isServer) {
-            NetworkManager.Instance.Broadcast(data);
-        }
+        //if (NetworkManager.Instance.isServer) {
+        //    NetworkManager.Instance.Broadcast(data);
+        //}
     }
 
     private void Update() {
-        Debug.Log(_cube.transform.position);
-        if (Input.GetButtonDown("Submit")) {
+        //if (Input.GetButton("Submit")) {
             _pos = new byte[(sizeof(float)) * 3]; // 4 bytes per float
 
-            Buffer.BlockCopy(_pos, 0, BitConverter.GetBytes(_cube.transform.position.x), 0, 4);
-            Buffer.BlockCopy(_pos, 4, BitConverter.GetBytes(_cube.transform.position.y), 0, 4);
-            Buffer.BlockCopy(_pos, 8, BitConverter.GetBytes(_cube.transform.position.z), 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(_cube.transform.position.x), 0, _pos, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(_cube.transform.position.y), 0, _pos, (sizeof(float)), 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(_cube.transform.position.z), 0, _pos, (sizeof(float)) * 2, 4);
 
-            if (NetworkManager.Instance.isServer) {
-                NetworkManager.Instance.Broadcast(_pos);
-            } else {
+            if (!NetworkManager.Instance.isServer) {
                 NetworkManager.Instance.SendToServer(_pos);
             }
-        }
+        //}
     }
 }

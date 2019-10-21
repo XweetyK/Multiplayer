@@ -18,7 +18,7 @@ public class ChatScreen : MonoBehaviourSingleton<ChatScreen> {
 
     void OnReceiveDataEvent(byte[] data, IPEndPoint ep) {
         if (NetworkManager.Instance.isServer) {
-            NetworkManager.Instance.Broadcast(data);
+            //NetworkManager.Instance.Broadcast(data);
         }
 
         messages.text += System.Text.ASCIIEncoding.UTF8.GetString(data) + System.Environment.NewLine;
